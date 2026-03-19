@@ -8,6 +8,7 @@ export const site = {
 	email: "dk@dkribeiro.com",
 	linkedin: "https://www.linkedin.com/in/dkribeiro/",
 	github: "https://github.com/dkribeiro",
-	resumePath: "/resume.pdf",
+	// Stored in `public/` with a space in the filename; keep the URL encoded.
+	resumePath: "/Resume%20Andre%20Ribeiro.pdf",
 	ogImage: "/og-image.svg",
 } as const;
