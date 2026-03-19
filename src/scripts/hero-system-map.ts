@@ -66,6 +66,8 @@ const JIGGLE_SECONDS = 2.0;
 const CRITICAL_SECONDS = 0.65;
 const NODE_FADE_SECONDS = 6.5;
 const EDGE_FADE_SECONDS = 0.8;
+const AUTONOMOUS_EVENT_MIN_SECONDS = 2.4;
+const AUTONOMOUS_EVENT_JITTER_SECONDS = 2.2;
 
 function getQuality() {
 	const mobile = window.innerWidth < 768;
@@ -154,6 +156,42 @@ const ghostEdges: GhostEdge[] = [];
 			visibility: 1,
 		});
 	}
+	// Hidden replica pool used for subtle autonomous scale up/down over time.
+	const replicaPoolSize = Math.min(quality.maxReplicas, window.innerWidth < 768 ? 8 : 14);
+	for (let i = 0; i < replicaPoolSize; i++) {
+		const cluster = i % clusterCount;
+		const center = clusters[cluster];
+		nodes.push({
+			id: nodeId++,
+			type: "service",
+			status: "healthy",
+			basePosition: new THREE.Vector3(
+				center.x + (Math.random() - 0.5) * 6.2,
+				center.y + (Math.random() - 0.5) * 4.8,
+				0,
+			),
+			position: new THREE.Vector3(
+				center.x + (Math.random() - 0.5) * 6.2,
+				center.y + (Math.random() - 0.5) * 4.8,
+				0,
+			),
+			velocity: new THREE.Vector3(
+				(Math.random() - 0.5) * 0.015,
+				(Math.random() - 0.5) * 0.015,
+				0,
+			),
+			cluster,
+			load: Math.random() * 0.2 + 0.1,
+			spawnLevel: 0,
+			isReplica: true,
+			failureTimer: 0,
+			hasFailed: false,
+			state: "normal",
+			stateTimer: 0,
+			cooldown: 0.6 + Math.random() * 1.2,
+			visibility: 1,
+		});
+	}
 	for (let i = 0; i < quality.infraCount; i++) {
 		const cluster = i % clusterCount;
 		const center = clusters[cluster];
@@ -215,6 +253,7 @@ const ghostEdges: GhostEdge[] = [];
 	});
 	const serviceNodes = nodes.filter((n) => n.type === "service");
 	const infraNodes = nodes.filter((n) => n.type !== "service");
+	const baseServiceCount = serviceNodes.filter((n) => !n.isReplica).length;
 	const serviceMesh = new THREE.InstancedMesh(
 		serviceGeometry,
 		serviceMaterial,
@@ -278,7 +317,9 @@ const ghostEdges: GhostEdge[] = [];
 	let lastFrameMs = 0;
 	let mode: Mode = "healthy";
 	let modeUntil = 0;
-	let activeServiceCount = serviceNodes.length;
+	let activeServiceCount = baseServiceCount;
+let nextAutonomousEventAt =
+	AUTONOMOUS_EVENT_MIN_SECONDS + Math.random() * AUTONOMOUS_EVENT_JITTER_SECONDS;
 
 	const tempObj = new THREE.Object3D();
 
@@ -400,10 +441,43 @@ const ghostEdges: GhostEdge[] = [];
 			setMode("degradation", 1.2);
 		}
 
-		const targetServices = serviceNodes.length;
+		const oscillation = Math.sin(elapsedSeconds * (reducedMotion ? 0.15 : 0.32));
+		const amp = reducedMotion ? 2 : 5;
+		const targetServices = THREE.MathUtils.clamp(
+			baseServiceCount + Math.round(oscillation * amp),
+			Math.max(8, baseServiceCount - amp),
+			Math.min(serviceNodes.length, baseServiceCount + amp),
+		);
 		activeServiceCount = Math.round(
 			THREE.MathUtils.lerp(activeServiceCount, targetServices, reducedMotion ? 0.04 : 0.12),
 		);
+
+		// Autonomous cluster churn (independent from mouse):
+		// simulates deploys/load redistribution by periodically replacing a random node.
+		if (elapsedSeconds >= nextAutonomousEventAt) {
+			nextAutonomousEventAt =
+				elapsedSeconds +
+				AUTONOMOUS_EVENT_MIN_SECONDS +
+				Math.random() * AUTONOMOUS_EVENT_JITTER_SECONDS;
+
+			const candidates: number[] = [];
+			for (let i = 0; i < nodes.length; i++) {
+				const n = nodes[i];
+				if (n.state !== "normal") continue;
+				if (n.cooldown > 0) continue;
+				candidates.push(i);
+			}
+
+			if (candidates.length > 0) {
+				const idx = candidates[Math.floor(Math.random() * candidates.length)];
+				const n = nodes[idx];
+				if (n) {
+					// Fade old node/links while a fresh one replaces it.
+					addGhostForNode(idx, 0.9, Math.max(3.4, NODE_FADE_SECONDS * 0.75), 1.1);
+					respawnNode(n);
+				}
+			}
+		}
 
 		for (let i = 0; i < nodes.length; i++) {
 			const n = nodes[i];
