@@ -311,12 +311,47 @@ main {
 #work {
 	padding-top: 3rem;
 }
+#work .work-top {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1.25rem;
+	flex-wrap: wrap;
+}
 #work h2 {
 	font-family: var(--font-display);
 	font-size: clamp(1.75rem, 3vw, 2.25rem);
 	font-weight: 400;
 	margin: 0 0 2rem;
 	color: var(--fg);
+}
+
+.work-now {
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--bg-elevated);
+	padding: 0.9rem 1.1rem;
+	max-width: 34rem;
+	flex: 1 1 18rem;
+	margin-bottom: 1.25rem;
+}
+.work-now-label {
+	color: var(--muted);
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.work-now-text {
+	margin-top: 0.35rem;
+	color: var(--fg);
+	font-size: 0.98rem;
+	line-height: 1.35;
+	opacity: 0.92;
+}
+.work-now.is-active {
+	border-color: var(--accent);
+	background: color-mix(in srgb, var(--accent) 9%, var(--bg-elevated));
 }
 
 .timeline {

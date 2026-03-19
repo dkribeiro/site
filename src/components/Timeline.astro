@@ -8,8 +8,59 @@ const roles = (await getCollection("roles")).sort(
 ---
 
 <section id="work" aria-labelledby="work-heading">
-	<h2 id="work-heading">Work</h2>
+	<div class="work-top">
+		<h2 id="work-heading">Work</h2>
+		<div id="work-now" class="work-now" aria-live="polite">
+			<div class="work-now-label">Highlights</div>
+			<div class="work-now-text">Expand a role to preview key outcomes.</div>
+		</div>
+	</div>
 	<div class="timeline">
 		{roles.map((entry) => <RoleCard entry={entry} />)}
 	</div>
+
+	<script>
+		(() => {
+			const now = document.getElementById("work-now");
+			if (!now) return;
+			const textEl = now.querySelector(".work-now-text");
+			const details = Array.from(document.querySelectorAll("#work details"));
+
+			const updateFromDetails = (d) => {
+				const summary = d.querySelector("summary");
+				if (!summary) return;
+
+				const company = summary.querySelector(".company")?.textContent?.trim() ?? "";
+				const title = summary.querySelector(".title")?.textContent?.trim() ?? "";
+				const meta = summary.querySelector(".meta")?.textContent?.trim() ?? "";
+				const hook = summary.querySelector(".hook")?.textContent?.trim() ?? "";
+				const metric = d.querySelector(".metrics li")?.textContent?.trim() ?? "";
+
+				const heading = [company, title].filter(Boolean).join(" — ");
+				const outcome = metric || hook || meta;
+
+				if (heading || outcome) {
+					now.classList.add("is-active");
+					textEl.textContent = [heading, outcome].filter(Boolean).join(": ");
+				}
+			};
+
+			const reset = () => {
+				now.classList.remove("is-active");
+				textEl.textContent = "Expand a role to preview key outcomes.";
+			};
+
+			// Handle both single and multi-open details.
+			details.forEach((d) => {
+				d.addEventListener("toggle", () => {
+					if (d.open) updateFromDetails(d);
+					else {
+						// If nothing is open anymore, reset.
+						const anyOpen = details.some((x) => x.open);
+						if (!anyOpen) reset();
+					}
+				});
+			});
+		})();
+	</script>
 </section>
