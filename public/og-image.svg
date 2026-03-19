@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0c0c0f"/>
+  <text x="80" y="280" fill="#e8e6e3" font-family="Georgia,serif" font-size="72" font-style="italic">André (Dk) Ribeiro</text>
+  <text x="80" y="360" fill="#e8a54b" font-family="system-ui,sans-serif" font-size="28" font-weight="600" letter-spacing="0.15em">STAFF SOFTWARE ENGINEER</text>
+  <text x="80" y="420" fill="#8a8780" font-family="system-ui,sans-serif" font-size="24">Distributed systems · Fintech · 18+ years</text>
+  <rect x="80" y="480" width="120" height="4" fill="#e8a54b"/>
+</svg>

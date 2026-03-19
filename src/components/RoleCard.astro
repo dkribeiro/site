@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+
+interface Props {
+	entry: CollectionEntry<"roles">;
+}
+
+const { entry } = Astro.props;
+const { company, title, start, end, present, location, summary, stack, metrics } =
+	entry.data;
+const period = present ? `${start} — Present` : `${start} — ${end}`;
+
+const { Content } = await render(entry);
+---
+
+<article class="role-card">
+	<details>
+		<summary>
+			<span class="company">{company}</span>
+			<span class="title">{title}</span>
+			<span class="meta">{period} · {location}</span>
+			<span class="hook">{summary}</span>
+		</summary>
+		<div class="role-body">
+			<div class="content">
+				<Content />
+			</div>
+			{
+				metrics && metrics.length > 0 && (
+					<ul class="metrics" aria-label="Key outcomes">
+						{metrics.map((m) => (
+							<li>{m}</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				stack && stack.length > 0 && (
+					<ul class="stack" aria-label="Technologies">
+						{stack.map((t) => (
+							<li>{t}</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</details>
+</article>

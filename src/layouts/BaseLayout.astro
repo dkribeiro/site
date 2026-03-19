@@ -1,0 +1,55 @@
+---
+import "../styles/global.css";
+import { site } from "../site.config";
+
+interface Props {
+	title?: string;
+	description?: string;
+	ogTitle?: string;
+}
+
+const {
+	title = `${site.name} — ${site.title}`,
+	description = site.description,
+	ogTitle = title,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImageUrl = new URL(site.ogImage, site.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={ogTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+	</head>
+	<body>
+		<a href="#main" class="skip">Skip to content</a>
+		<header class="site-header">
+			<nav aria-label="Primary">
+				<a href="#hero">Top</a>
+				<a href="#work">Work</a>
+				<a href="#contact">Contact</a>
+			</nav>
+		</header>
+		<main id="main">
+			<slot />
+		</main>
+	</body>
+</html>

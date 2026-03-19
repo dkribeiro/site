@@ -1,0 +1,22 @@
+---
+import { site } from "../site.config";
+
+const year = new Date().getFullYear();
+---
+
+<section id="contact" aria-labelledby="contact-heading">
+	<h2 id="contact-heading">Contact</h2>
+	<p class="contact-line">
+		Open to Staff / Principal IC roles remotely (English-speaking teams). Primary focus: US,
+		Canada, and Europe.
+	</p>
+	<div class="contact-links">
+		<a href={`mailto:${site.email}`}>{site.email}</a>
+		<a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		<a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+		<a href={site.resumePath}>Résumé PDF</a>
+	</div>
+</section>
+<footer class="site-footer">
+	<p>© {year} {site.name}. Brazil.</p>
+</footer>

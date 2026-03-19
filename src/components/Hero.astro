@@ -1,0 +1,43 @@
+---
+import { site } from "../site.config";
+
+const resumeHref = site.resumePath;
+---
+
+<section id="hero" class="hero" aria-labelledby="hero-heading">
+	<div class="hero-visual">
+		<div class="hero-frame">
+			<img
+				src="/images/headshot.svg"
+				alt="André Ribeiro"
+				width="280"
+				height="280"
+				fetchpriority="high"
+			/>
+		</div>
+	</div>
+	<div class="hero-copy">
+		<p class="hero-role">{site.title}</p>
+		<h1 id="hero-heading">{site.name}</h1>
+		<p class="hero-tagline">{site.tagline}</p>
+		<ul class="ctas">
+			<li>
+				<a class="primary" href={site.linkedin} target="_blank" rel="noopener noreferrer"
+					>LinkedIn</a
+				>
+			</li>
+			<li>
+				<a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+			</li>
+			<li>
+				<a href={`mailto:${site.email}`}>Email</a>
+			</li>
+			<li>
+				<a href={resumeHref}>Résumé PDF</a>
+			</li>
+			<li>
+				<a href="#work">View work</a>
+			</li>
+		</ul>
+	</div>
+</section>

@@ -1,0 +1,15 @@
+---
+import { getCollection } from "astro:content";
+import RoleCard from "./RoleCard.astro";
+
+const roles = (await getCollection("roles")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<section id="work" aria-labelledby="work-heading">
+	<h2 id="work-heading">Work</h2>
+	<div class="timeline">
+		{roles.map((entry) => <RoleCard entry={entry} />)}
+	</div>
+</section>

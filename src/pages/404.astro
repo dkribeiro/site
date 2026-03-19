@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../site.config";
+---
+
+<BaseLayout title={`404 — ${site.name}`} description="Page not found.">
+	<div class="page-404">
+		<h1>404</h1>
+		<p style="color: var(--muted); margin-bottom: 2rem;">This page doesn’t exist.</p>
+		<a href="/">Back home</a>
+	</div>
+</BaseLayout>
