@@ -16,10 +16,12 @@
   },
   "dependencies": {
     "astro": "^6.0.6",
+    "three": "^0.183.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
+    "@types/three": "^0.183.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
   }
