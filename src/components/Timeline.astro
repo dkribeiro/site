@@ -15,19 +15,63 @@ const roles = (await getCollection("roles")).sort(
 			<div class="work-now-text">Expand a role to preview key outcomes.</div>
 		</div>
 	</div>
-	<div class="timeline">
-		{roles.map((entry) => <RoleCard entry={entry} />)}
+	<div class="timeline" id="timeline">
+		<div class="pipeline-track" aria-hidden="true">
+			<div class="pipeline-fill"></div>
+		</div>
+		{roles.map((entry) => (
+			<div class="timeline-entry">
+				<div class="pipeline-node" aria-hidden="true"></div>
+				<RoleCard entry={entry} />
+			</div>
+		))}
 	</div>
 
 	<script>
 		(() => {
 			const now = document.getElementById("work-now");
 			if (!now) return;
-			const textEl = now.querySelector(".work-now-text");
-			const details = Array.from(document.querySelectorAll("#work details"));
+			const textEl = now.querySelector<HTMLElement>(".work-now-text");
+			if (!textEl) return;
+			const details = Array.from(
+				document.querySelectorAll<HTMLDetailsElement>("#work details")
+			);
 
-			const updateFromDetails = (d) => {
-				const summary = d.querySelector("summary");
+			const timelineEl = document.getElementById("timeline");
+			const fill = document.querySelector<HTMLElement>(".pipeline-fill");
+			const nodes = Array.from(
+				document.querySelectorAll<HTMLElement>(".pipeline-node")
+			);
+
+			const updatePipeline = () => {
+				if (!timelineEl || !fill) return;
+
+				const trigger = window.innerHeight * 0.65;
+				const rect = timelineEl.getBoundingClientRect();
+				const progress = Math.max(
+					0,
+					Math.min(1, (trigger - rect.top) / rect.height),
+				);
+				fill.style.transform = `scaleY(${progress})`;
+
+				let lastActive: HTMLElement | null = null;
+				for (const node of nodes) {
+					const nodeRect = node.getBoundingClientRect();
+					if (nodeRect.top < trigger) {
+						node.classList.add("active");
+						node.classList.remove("pulse");
+						lastActive = node;
+					} else {
+						node.classList.remove("active");
+						node.classList.remove("pulse");
+					}
+				}
+
+				if (lastActive) lastActive.classList.add("pulse");
+			};
+
+			const updateFromDetails = (d: HTMLDetailsElement) => {
+				const summary = d.querySelector<HTMLElement>("summary");
 				if (!summary) return;
 
 				const company = summary.querySelector(".company")?.textContent?.trim() ?? "";
@@ -59,8 +103,25 @@ const roles = (await getCollection("roles")).sort(
 						const anyOpen = details.some((x) => x.open);
 						if (!anyOpen) reset();
 					}
+
+					// Recompute pipeline after layout changes (details expand/collapse).
+					requestAnimationFrame(() => updatePipeline());
 				});
 			});
+
+			let ticking = false;
+			const onScroll = () => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(() => {
+					updatePipeline();
+					ticking = false;
+				});
+			};
+
+			window.addEventListener("scroll", onScroll, { passive: true });
+			window.addEventListener("resize", onScroll, { passive: true });
+			updatePipeline();
 		})();
 	</script>
 </section>

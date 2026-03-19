@@ -5,8 +5,9 @@ const resumeHref = site.resumePath;
 ---
 
 <section id="hero" class="hero" aria-labelledby="hero-heading">
+	<canvas id="particle-canvas" aria-hidden="true"></canvas>
 	<div class="hero-visual">
-		<div class="hero-frame">
+		<div class="hero-frame" data-hero-entrance style="--hero-delay: 80ms">
 			<img
 				src="/images/headshot.JPG"
 				alt="André Ribeiro"
@@ -17,10 +18,14 @@ const resumeHref = site.resumePath;
 		</div>
 	</div>
 	<div class="hero-copy">
-		<p class="hero-role">{site.title}</p>
-		<h1 id="hero-heading">{site.name}</h1>
-		<p class="hero-tagline">{site.tagline}</p>
-		<ul class="ctas">
+		<p class="hero-role" data-hero-entrance style="--hero-delay: 160ms">{site.title}</p>
+		<h1 id="hero-heading" data-hero-entrance style="--hero-delay: 260ms">
+			{site.name}
+		</h1>
+		<p class="hero-tagline" data-hero-entrance style="--hero-delay: 380ms">
+			{site.tagline}
+		</p>
+		<ul class="ctas" data-hero-entrance style="--hero-delay: 560ms">
 			<li>
 				<a class="primary" href={site.linkedin} target="_blank" rel="noopener noreferrer"
 					>LinkedIn</a
@@ -40,4 +45,225 @@ const resumeHref = site.resumePath;
 			</li>
 		</ul>
 	</div>
+
+	<script>
+		(() => {
+			const hero = document.getElementById("hero");
+			const canvas = document.getElementById("particle-canvas") as HTMLCanvasElement | null;
+			if (!hero || !canvas) return;
+
+			const ctx = canvas.getContext("2d");
+			if (!ctx) return;
+			const ctx2 = ctx;
+			const canvas2 = canvas;
+
+			const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			const pointerFine = window.matchMedia("(pointer: fine)").matches;
+
+			const accent = { r: 232, g: 165, b: 75 };
+
+			let width = 0;
+			let height = 0;
+			let dpr = 1;
+			let rafId: number | null = null;
+			let isVisible = true;
+
+			const mouse = { x: -9999, y: -9999 };
+
+			interface Particle {
+				x: number;
+				y: number;
+				vx: number;
+				vy: number;
+				size: number;
+				opacity: number;
+			}
+
+			let particles: Particle[] = [];
+
+			function getCounts() {
+				const isMobile = window.innerWidth < 768;
+				return {
+					count: isMobile ? 70 : 115,
+					connectionDist: isMobile ? 120 : 155,
+					mouseRadius: isMobile ? 170 : 220,
+				};
+			}
+
+			function resize() {
+				dpr = Math.max(1, window.devicePixelRatio || 1);
+
+				const rect = canvas2.getBoundingClientRect();
+				width = Math.max(1, rect.width);
+				height = Math.max(1, rect.height);
+
+				canvas2.width = Math.floor(width * dpr);
+				canvas2.height = Math.floor(height * dpr);
+				canvas2.style.width = `${width}px`;
+				canvas2.style.height = `${height}px`;
+
+				ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+				const { count } = getCounts();
+				particles = Array.from({ length: count }, () => ({
+					x: Math.random() * width,
+					y: Math.random() * height,
+					vx: (Math.random() - 0.5) * (window.innerWidth < 768 ? 0.55 : 0.45),
+					vy: (Math.random() - 0.5) * (window.innerWidth < 768 ? 0.55 : 0.45),
+					size: Math.random() * 1.6 + 0.8,
+					opacity: Math.random() * 0.35 + 0.15,
+				}));
+			}
+
+			function draw() {
+				ctx2.clearRect(0, 0, width, height);
+
+				const { connectionDist, mouseRadius } = getCounts();
+				const connectionDist2 = connectionDist * connectionDist;
+				const mouseRadius2 = mouseRadius * mouseRadius;
+
+				// Connections
+				for (let i = 0; i < particles.length; i++) {
+					const a = particles[i];
+					for (let j = i + 1; j < particles.length; j++) {
+						const b = particles[j];
+						const dx = a.x - b.x;
+						const dy = a.y - b.y;
+						const dist2 = dx * dx + dy * dy;
+						if (dist2 >= connectionDist2) continue;
+
+						const alpha = (1 - dist2 / connectionDist2) * 0.25;
+						ctx2.strokeStyle = `rgba(${accent.r},${accent.g},${accent.b},${alpha})`;
+						ctx2.lineWidth = 0.8;
+						ctx2.beginPath();
+						ctx2.moveTo(a.x, a.y);
+						ctx2.lineTo(b.x, b.y);
+						ctx2.stroke();
+					}
+				}
+
+				// Mouse connections
+				if (pointerFine && mouse.x > -1000) {
+					for (const p of particles) {
+						const dx = mouse.x - p.x;
+						const dy = mouse.y - p.y;
+						const dist2 = dx * dx + dy * dy;
+						if (dist2 >= mouseRadius2) continue;
+
+						const alpha = (1 - dist2 / mouseRadius2) * 0.35;
+						ctx2.strokeStyle = `rgba(${accent.r},${accent.g},${accent.b},${alpha})`;
+						ctx2.lineWidth = 0.6;
+						ctx2.beginPath();
+						ctx2.moveTo(mouse.x, mouse.y);
+						ctx2.lineTo(p.x, p.y);
+						ctx2.stroke();
+					}
+				}
+
+				// Particles
+				for (const p of particles) {
+					ctx2.fillStyle = `rgba(${accent.r},${accent.g},${accent.b},${p.opacity})`;
+					ctx2.beginPath();
+					ctx2.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+					ctx2.fill();
+				}
+			}
+
+			function update(timeMs: number) {
+				const { mouseRadius } = getCounts();
+				const mouseRadius2 = mouseRadius * mouseRadius;
+
+				for (let i = 0; i < particles.length; i++) {
+					const p = particles[i];
+
+					// Gentle background motion
+					p.vx += Math.sin(timeMs * 0.001 + i) * 0.0005;
+					p.vy += Math.cos(timeMs * 0.001 + i) * 0.0005;
+
+					// Clamp speed so things don't explode after many resizes
+					const speed = Math.hypot(p.vx, p.vy);
+					const maxSpeed = window.innerWidth < 768 ? 0.95 : 0.8;
+					if (speed > maxSpeed) {
+						p.vx = (p.vx / speed) * maxSpeed;
+						p.vy = (p.vy / speed) * maxSpeed;
+					}
+
+					// Mouse gravity attractor
+					if (pointerFine && mouse.x > -1000) {
+						const dx = mouse.x - p.x;
+						const dy = mouse.y - p.y;
+						const dist2 = dx * dx + dy * dy;
+						if (dist2 < mouseRadius2) {
+							const dist = Math.sqrt(dist2) || 1;
+							const force = ((mouseRadius - dist) / mouseRadius) * 0.018;
+							p.vx += (dx / dist) * force;
+							p.vy += (dy / dist) * force;
+						}
+					}
+
+					p.x += p.vx;
+					p.y += p.vy;
+
+					// Wrap-around to keep density stable
+					if (p.x < 0) p.x = width;
+					if (p.x > width) p.x = 0;
+					if (p.y < 0) p.y = height;
+					if (p.y > height) p.y = 0;
+				}
+			}
+
+			function start() {
+				if (rafId != null) return;
+				isVisible = true;
+				const loop = (t: number) => {
+					if (!isVisible) {
+						rafId = null;
+						return;
+					}
+					update(t);
+					draw();
+					rafId = requestAnimationFrame(loop);
+				};
+				rafId = requestAnimationFrame(loop);
+			}
+
+			function stop() {
+				isVisible = false;
+				if (rafId != null) cancelAnimationFrame(rafId);
+				rafId = null;
+			}
+
+			resize();
+			draw();
+
+			if (!prefersReduced) {
+				if (pointerFine) {
+					hero.addEventListener("pointermove", (e: PointerEvent) => {
+							const rect = canvas2.getBoundingClientRect();
+						mouse.x = e.clientX - rect.left;
+						mouse.y = e.clientY - rect.top;
+					});
+					hero.addEventListener("pointerleave", () => {
+						mouse.x = -9999;
+						mouse.y = -9999;
+					});
+				}
+
+				new IntersectionObserver(
+					([entry]) => {
+						if (entry.isIntersecting) start();
+						else stop();
+					},
+					{ threshold: 0.1 },
+				).observe(hero);
+
+				window.addEventListener("resize", () => {
+					resize();
+					draw();
+				});
+
+				start();
+			}
+		})();
+	</script>
 </section>

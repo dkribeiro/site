@@ -7,9 +7,23 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { company, title, start, end, present, location, summary, stack, metrics } =
+const {
+	company,
+	title,
+	start,
+	end,
+	present,
+	location,
+	summary,
+	stack,
+	metrics,
+	projects,
+} =
 	entry.data;
 const period = present ? `${start} — Present` : `${start} — ${end}`;
+const featuredProject = projects?.[0];
+const allProjects = projects ?? [];
+const projectsRegionId = `projects-${entry.id.replace(/[^a-z0-9_-]/gi, "-")}`;
 
 const { Content } = await render(entry);
 ---
@@ -44,6 +58,100 @@ const { Content } = await render(entry);
 					</ul>
 				)
 			}
+			{
+				featuredProject && (
+					<section class="role-projects" aria-label="Featured projects">
+						<div class="project-preview">
+							<p class="project-kicker">Featured project</p>
+							<h3>{featuredProject.name}</h3>
+							<p class="project-dates">{featuredProject.dates}</p>
+							<p>{featuredProject.summary}</p>
+							<p class="project-impact">{featuredProject.impact[0]}</p>
+							{
+								featuredProject.link && (
+									<a href={featuredProject.link} target="_blank" rel="noopener noreferrer">
+										Visit project
+									</a>
+								)
+							}
+						</div>
+
+						{
+							allProjects.length > 1 && (
+								<>
+									<button
+										class="projects-toggle"
+										type="button"
+										aria-expanded="false"
+										aria-controls={projectsRegionId}
+										data-label-show={`Show all projects (${allProjects.length})`}
+										data-label-hide={`Hide all projects (${allProjects.length})`}
+									>
+										Show all projects ({allProjects.length})
+									</button>
+									<div id={projectsRegionId} class="projects-region" hidden>
+										<ul class="projects-list">
+											{allProjects.map((project) => (
+												<li class="project-card">
+													<h4>{project.name}</h4>
+													<p class="project-dates">{project.dates}</p>
+													<p>{project.summary}</p>
+													<ul class="project-impact-list">
+														{project.impact.map((item) => (
+															<li>{item}</li>
+														))}
+													</ul>
+													{
+														project.skills && (
+															<ul class="project-skills">
+																{project.skills.map((skill) => (
+																	<li>{skill}</li>
+																))}
+															</ul>
+														)
+													}
+													{
+														project.link && (
+															<a
+																href={project.link}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																Open link
+															</a>
+														)
+													}
+												</li>
+											))}
+										</ul>
+									</div>
+								</>
+							)
+						}
+					</section>
+				)
+			}
 		</div>
 	</details>
+
+	<script>
+		(() => {
+			const toggles = document.querySelectorAll<HTMLButtonElement>(".projects-toggle");
+			toggles.forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const id = btn.getAttribute("aria-controls");
+					if (!id) return;
+					const region = document.getElementById(id);
+					if (!region) return;
+					const expanded = btn.getAttribute("aria-expanded") === "true";
+					const nextExpanded = !expanded;
+					btn.setAttribute("aria-expanded", nextExpanded ? "true" : "false");
+					btn.textContent = nextExpanded
+						? btn.dataset.labelHide ?? "Hide all projects"
+						: btn.dataset.labelShow ?? "Show all projects";
+					region.hidden = !nextExpanded;
+				});
+			});
+		})();
+	</script>
 </article>

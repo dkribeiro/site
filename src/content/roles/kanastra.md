@@ -21,6 +21,19 @@ metrics:
   - "~90% reduction in manual transaction recovery via Temporal.io adoption"
   - "60% reduction in average time-to-hire after new technical hiring process"
   - "First formal SDLC with structured backlog and velocity metrics"
+projects:
+  - name: Lending Platform
+    dates: "Apr 2025 – Present"
+    summary: "Designed a modular lending platform to support multiple credit instruments with long-term extensibility."
+    impact:
+      - "Enabled new instrument onboarding without core platform refactors"
+      - "Established auditable long-running workflows for financial operations"
+    skills:
+      - Node.js
+      - PostgreSQL
+      - Temporal.io
+      - Kubernetes
+    link: "https://www.kanastra.com.br/en/banking"
 ---
 
 - Architected the firm’s core lending platform from the ground up for a new credit vertical.

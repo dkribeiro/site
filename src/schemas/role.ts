@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+const projectSchema = z.object({
+	name: z.string().min(1),
+	dates: z.string().min(1),
+	summary: z.string().min(1),
+	impact: z.array(z.string().min(1)).min(1),
+	skills: z.array(z.string().min(1)).optional(),
+	link: z.url().optional(),
+});
+
 export const roleSchema = z
 	.object({
 		company: z.string().min(1),
@@ -12,6 +21,7 @@ export const roleSchema = z
 		order: z.number().int(),
 		stack: z.array(z.string()).optional(),
 		metrics: z.array(z.string()).optional(),
+		projects: z.array(projectSchema).optional(),
 	})
 	.refine((d) => d.present === true || Boolean(d.end?.length), {
 		message: "Either present: true or end date required",

@@ -1,9 +1,9 @@
 ---
 ---
 
-<section id="about" class="about" aria-labelledby="about-heading">
+<section id="about" class="about" aria-labelledby="about-heading" data-reveal>
 	<div class="about-inner">
-		<div class="about-left">
+		<div class="about-left" data-reveal style="--reveal-delay: 100ms">
 			<h2 id="about-heading">What I optimize for</h2>
 			<p class="about-lead">
 				I build backend systems that stay correct under load and survive failure.
@@ -16,18 +16,47 @@
 			</blockquote>
 		</div>
 
-		<div class="about-right" aria-label="Impact metrics">
+		<div
+			class="about-right"
+			aria-label="Impact metrics"
+			data-reveal
+			style="--reveal-delay: 200ms"
+		>
 			<div class="about-metrics">
 				<div class="metric">
-					<div class="metric-value">20M+</div>
+					<div
+						class="metric-value"
+						data-count-to="20"
+						data-count-suffix="M+"
+						data-count-decimals="0"
+					>
+						0
+					</div>
 					<div class="metric-label">active users supported in production</div>
 				</div>
 				<div class="metric">
-					<div class="metric-value">99.99%</div>
+					<div
+						class="metric-value"
+						data-count-to="99.99"
+						data-count-suffix="%"
+						data-count-decimals="2"
+					>
+						0
+					</div>
 					<div class="metric-label">uptime on critical backend systems</div>
 				</div>
 				<div class="metric">
-					<div class="metric-value">1 → 50+</div>
+					<div class="metric-value">
+						<span class="metric-static-from">1 → </span>
+						<span
+							class="metric-value-to"
+							data-count-to="50"
+							data-count-suffix="+"
+							data-count-decimals="0"
+						>
+							0
+						</span>
+					</div>
 					<div class="metric-label">engineers scaled across teams</div>
 				</div>
 			</div>
@@ -37,5 +66,75 @@
 			</p>
 		</div>
 	</div>
+
+	<script>
+		(() => {
+			const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+			function easeOutCubic(t: number): number {
+				return 1 - Math.pow(1 - t, 3);
+			}
+
+			const targets = Array.from(
+				document.querySelectorAll<HTMLElement>("[data-count-to]")
+			);
+			if (targets.length === 0) return;
+
+			const durationMs = 2000;
+
+			const animateOne = (el: HTMLElement) => {
+				const targetRaw = el.dataset.countTo ?? "0";
+				const suffix = el.dataset.countSuffix ?? "";
+				const decimalsRaw = el.dataset.countDecimals ?? "0";
+
+				const target = parseFloat(targetRaw);
+				const decimals = parseInt(decimalsRaw, 10);
+				if (!Number.isFinite(target) || !Number.isFinite(decimals)) {
+					el.textContent = `${targetRaw}${suffix}`;
+					return;
+				}
+
+				if (prefersReduced) {
+					el.textContent = `${target.toFixed(decimals)}${suffix}`;
+					el.closest<HTMLElement>(".metric")?.classList.add("metric-landed");
+					return;
+				}
+
+				const start = performance.now();
+
+				const tick = (now: number) => {
+					const elapsed = now - start;
+					const t = Math.min(elapsed / durationMs, 1);
+					const eased = easeOutCubic(t);
+					const value = target * eased;
+
+					el.textContent = `${value.toFixed(decimals)}${suffix}`;
+
+					if (t < 1) {
+						requestAnimationFrame(tick);
+					} else {
+						el.textContent = `${target.toFixed(decimals)}${suffix}`;
+						el.closest<HTMLElement>(".metric")?.classList.add("metric-landed");
+					}
+				};
+
+				requestAnimationFrame(tick);
+			};
+
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						const el = entry.target as HTMLElement;
+						animateOne(el);
+						io.unobserve(entry.target);
+					}
+				},
+				{ threshold: 0.45 }
+			);
+
+			targets.forEach((el) => io.observe(el));
+		})();
+	</script>
 </section>
 

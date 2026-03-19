@@ -57,4 +57,40 @@ describe("roleSchema", () => {
 			}).success,
 		).toBe(true);
 	});
+
+	it("accepts valid projects array", () => {
+		expect(
+			roleSchema.safeParse({
+				...validBase,
+				projects: [
+					{
+						name: "Lending Platform",
+						dates: "2025-04 to Present",
+						summary:
+							"Built a modular lending platform for multiple credit products.",
+						impact: ["Improved extensibility for new instruments"],
+						skills: ["Node.js", "PostgreSQL"],
+						link: "https://www.kanastra.com.br/en/banking",
+					},
+				],
+			}).success,
+		).toBe(true);
+	});
+
+	it("rejects project with invalid link", () => {
+		expect(
+			roleSchema.safeParse({
+				...validBase,
+				projects: [
+					{
+						name: "Broken",
+						dates: "2024-01 to 2024-02",
+						summary: "x",
+						impact: ["y"],
+						link: "not-a-url",
+					},
+				],
+			}).success,
+		).toBe(false);
+	});
 });
