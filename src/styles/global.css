@@ -245,6 +245,9 @@ main {
 		grid-template-columns: 1.1fr 0.9fr;
 		align-items: start;
 	}
+	.about-left {
+		padding-left: 1.25rem;
+	}
 }
 
 .about h2 {
