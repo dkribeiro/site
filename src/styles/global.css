@@ -826,3 +826,84 @@ main {
 	color: var(--accent);
 	font-weight: 600;
 }
+
+/* Domain expertise */
+.expertise {
+	padding: 2.75rem 0 2.25rem;
+	border-bottom: 1px solid var(--border);
+}
+.expertise-inner {
+	display: grid;
+	gap: 1.5rem;
+}
+.expertise h2 {
+	font-family: var(--font-display);
+	font-size: clamp(1.6rem, 3vw, 2.05rem);
+	font-weight: 400;
+	margin: 0;
+}
+.expertise-lead {
+	margin: 0;
+	color: var(--muted);
+	max-width: 42rem;
+}
+.expertise-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+}
+@media (min-width: 640px) {
+	.expertise-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+@media (min-width: 960px) {
+	.expertise-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+.expertise-card {
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--accent);
+	border-radius: var(--radius);
+	background: var(--bg-elevated);
+	padding: 1.1rem 1.2rem;
+	transition: border-color 0.15s ease, background 0.15s ease;
+}
+.expertise-card:hover {
+	border-color: var(--accent);
+	background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+}
+.expertise-label {
+	margin: 0;
+	font-family: var(--font-body);
+	font-size: 1.02rem;
+	font-weight: 700;
+	color: var(--fg);
+}
+.expertise-descriptor {
+	margin: 0.4rem 0 0.75rem;
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.45;
+}
+.expertise-chips {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+}
+.expertise-chips li {
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	padding: 0.2rem 0.5rem;
+	border: 1px solid var(--accent-dim);
+	color: var(--accent);
+	border-radius: var(--radius);
+}
