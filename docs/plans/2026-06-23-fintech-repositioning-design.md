@@ -40,18 +40,18 @@ The single new visible element.
 - **Placement:** in `src/pages/index.astro`, immediately after `<Hero />` and before `<About />`. It's the differentiator, so it surfaces early.
 - **Heading:** "Fintech domain expertise."
 - **Framer line:** "Most of what a financial company needs to build, I've already shipped."
-- **Body:** responsive grid of 6 buckets. Each bucket = bold label + one-line descriptor (descriptor uses concrete Brazilian-market vocabulary as the insider signal even though labels are English) + small company chips tying the bucket to real shipped work.
+- **Body:** responsive grid of 6 buckets. Each bucket = bold label + one-line descriptor + small company chips tying the bucket to real shipped work. **Language: English-only.** Descriptors are in English; instrument proper-names (CCB, debentures, FIDC, CRI/CRA, commercial notes) are retained because they are product names with no plain-English substitute — they are the domain signal, not Portuguese copy.
 
 Buckets:
 
 | Label | Descriptor | Chips |
 | --- | --- | --- |
-| Cards & Issuing | credit cards, issuers, brands, interchange | PicPay · Conduit |
-| Receivables & Payroll | recebíveis, antecipação, registradoras, salary advance | PicPay |
-| Lending & Capital Markets | CCB, nota comercial, debêntures, CRI/CRA, FIDCs | Kanastra |
-| Cross-border & Stablecoins | multi-bank orchestration, FX, stablecoin rails | Conduit |
-| Core Banking & Ledger | double-entry ledger, BaaS, money movement | Kanastra · Conduit |
-| Payments & Integrations | payment methods, acquiring, banking integrations | PicPay · Conduit |
+| Cards & Issuing | Credit cards, issuers, card networks, interchange | PicPay · Conduit |
+| Receivables & Payroll | Receivables financing, registries, payroll, salary advance | PicPay |
+| Lending & Capital Markets | CCB, commercial notes, debentures, CRI/CRA, FIDCs | Kanastra |
+| Cross-border & Stablecoins | Multi-bank orchestration, FX, stablecoin rails | Conduit |
+| Core Banking & Ledger | Double-entry ledger, BaaS, money movement | Kanastra · Conduit |
+| Payments & Integrations | Payment methods, acquiring, banking integrations | PicPay · Conduit |
 
 - **Data:** a typed const array `src/data/domains.ts` (label, descriptor, chips[]). No content-collection schema needed — this is static presentational data.
 - **Styling:** match existing editorial CSS. Reuse `global.css` tokens and a card treatment echoing `RoleCard.astro`. Static and scannable in ~3 seconds; subtle hover only (no heavy interaction, no JS dependency).
