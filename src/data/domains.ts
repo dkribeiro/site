@@ -17,7 +17,7 @@ export const domains: Domain[] = [
 	},
 	{
 		label: "Lending & Capital Markets",
-		descriptor: "CCB, commercial notes, debentures, CRI/CRA, FIDCs",
+		descriptor: "CCB, commercial notes, debentures, FIDCs, securitization",
 		chips: ["Kanastra"],
 	},
 	{
