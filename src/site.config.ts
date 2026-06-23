@@ -1,9 +1,9 @@
 export const site = {
 	name: "André (Dk) Ribeiro",
 	title: "Staff Software Engineer",
-	tagline: "18+ years · Scalable systems · Technical leadership",
+	tagline: "18+ years · Scalable systems · Technical leadership · Fintech",
 	description:
-		"Staff Software Engineer architecting scalable, low-latency backends and high-performing engineering organizations. Remote — US, Canada, Europe.",
+		"Staff Engineer with 18+ years building fintech infrastructure — cards, lending, cross-border, and core banking. Technical leadership at scale. Remote — US, Canada, Europe.",
 	url: "https://dkribeiro.com",
 	email: "dk@dkribeiro.com",
 	linkedin: "https://www.linkedin.com/in/dkribeiro/",
