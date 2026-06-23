@@ -46,9 +46,9 @@ Buckets:
 
 | Label | Descriptor | Chips |
 | --- | --- | --- |
-| Cards & Issuing | Credit cards, issuers, card networks, interchange | PicPay · Conduit |
+| Cards & Issuing | Credit cards, issuers, card networks, interchange | PicPay |
 | Receivables & Payroll | Receivables financing, registries, payroll, salary advance | PicPay |
-| Lending & Capital Markets | CCB, commercial notes, debentures, CRI/CRA, FIDCs | Kanastra |
+| Lending & Capital Markets | CCB, commercial notes, debentures, FIDCs, securitization | Kanastra |
 | Cross-border & Stablecoins | Multi-bank orchestration, FX, stablecoin rails | Conduit |
 | Core Banking & Ledger | Double-entry ledger, BaaS, money movement | Kanastra · Conduit |
 | Payments & Integrations | Payment methods, acquiring, banking integrations | PicPay · Conduit |

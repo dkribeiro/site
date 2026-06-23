@@ -4,7 +4,7 @@ title: Staff Software Engineer
 start: 2022-05
 end: 2025-04
 location: São Paulo, Brazil (Remote)
-summary: Led benefits fintech products and scaled backend orgs for 20M+ users.
+summary: Led benefits & credit fintech products — receivables-backed and corporate cards, payroll, salary advance — and scaled backend orgs for 20M+ users.
 order: 3
 stack:
   - AWS
@@ -49,6 +49,6 @@ projects:
     link: "https://picpay.com/pt-br/pj/beneficios"
 ---
 
-- Architected Flexible Benefits Credit Card, Payroll, Salary Advance, and Corporate Credit Card.
-- Defined architectural roadmaps; mentored Senior/Staff engineers; Backend Chapters across 50+ engineers.
-- Corporate Credit Card delivery integrating legacy systems with PostgreSQL, Redis, Kafka, Kubernetes.
+- Architected a receivables-backed Flexible Benefits credit card and a Corporate credit card, integrating issuer, card-network, and registradora (receivables registry) flows.
+- Built Payroll and Salary Advance (antecipação salarial) products on top of the benefits rails.
+- Defined architectural roadmaps and led Backend Chapters across 50+ engineers; delivered card products on PostgreSQL, Redis, Kafka, and Kubernetes.

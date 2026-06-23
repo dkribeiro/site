@@ -1,0 +1,29 @@
+---
+import { domains } from "../data/domains.ts";
+---
+
+<section id="expertise" class="expertise" aria-labelledby="expertise-heading" data-reveal>
+	<div class="expertise-inner">
+		<h2 id="expertise-heading" data-reveal style="--reveal-delay: 100ms">
+			Fintech domain expertise
+		</h2>
+		<p class="expertise-lead" data-reveal style="--reveal-delay: 160ms">
+			Most of what a financial company needs to build, I've already shipped.
+		</p>
+		<ul class="expertise-grid" data-reveal style="--reveal-delay: 220ms">
+			{
+				domains.map((domain) => (
+					<li class="expertise-card">
+						<h3 class="expertise-label">{domain.label}</h3>
+						<p class="expertise-descriptor">{domain.descriptor}</p>
+						<ul class="expertise-chips" aria-label={`Where I built ${domain.label}`}>
+							{domain.chips.map((chip) => (
+								<li>{chip}</li>
+							))}
+						</ul>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
