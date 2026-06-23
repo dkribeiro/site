@@ -16,7 +16,7 @@ import { domains } from "../data/domains.ts";
 					<li class="expertise-card">
 						<h3 class="expertise-label">{domain.label}</h3>
 						<p class="expertise-descriptor">{domain.descriptor}</p>
-						<ul class="expertise-chips" aria-label="Where I built it">
+						<ul class="expertise-chips" aria-label={`Where I built ${domain.label}`}>
 							{domain.chips.map((chip) => (
 								<li>{chip}</li>
 							))}

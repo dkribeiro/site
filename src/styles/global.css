@@ -829,6 +829,7 @@ main {
 
 /* Domain expertise */
 .expertise {
+	margin: 1.5rem 0 0;
 	padding: 2.75rem 0 2.25rem;
 	border-bottom: 1px solid var(--border);
 }
