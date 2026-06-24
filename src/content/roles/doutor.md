@@ -4,7 +4,7 @@ title: Junior Software Developer
 start: 2008-05
 end: 2011-04
 location: Mariana, Brazil
-summary: POS and financial management software for SMBs—first professional engineering role.
+summary: POS and financial management software for SMBs; my first professional engineering role.
 order: 8
 stack:
   - PHP

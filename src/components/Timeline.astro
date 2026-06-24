@@ -80,7 +80,7 @@ const roles = (await getCollection("roles")).sort(
 				const hook = summary.querySelector(".hook")?.textContent?.trim() ?? "";
 				const metric = d.querySelector(".metrics li")?.textContent?.trim() ?? "";
 
-				const heading = [company, title].filter(Boolean).join(" — ");
+				const heading = [company, title].filter(Boolean).join(" · ");
 				const outcome = metric || hook || meta;
 
 				if (heading || outcome) {

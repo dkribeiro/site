@@ -20,7 +20,7 @@ const {
 	projects,
 } =
 	entry.data;
-const period = present ? `${start} — Present` : `${start} — ${end}`;
+const period = present ? `${start} – Present` : `${start} – ${end}`;
 const featuredProject = projects?.[0];
 const allProjects = projects ?? [];
 const projectsRegionId = `projects-${entry.id.replace(/[^a-z0-9_-]/gi, "-")}`;

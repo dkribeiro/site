@@ -4,7 +4,7 @@ title: Staff Software Engineer
 start: 2022-05
 end: 2025-04
 location: São Paulo, Brazil (Remote)
-summary: Led benefits & credit fintech products — receivables-backed and corporate cards, payroll, salary advance — and scaled backend orgs for 20M+ users.
+summary: Led benefits & credit fintech products (receivables-backed and corporate cards, payroll, salary advance) and scaled backend orgs for 20M+ users.
 order: 3
 stack:
   - AWS

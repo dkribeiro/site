@@ -8,7 +8,7 @@ export const domains: Domain[] = [
 	{
 		label: "Cards & Issuing",
 		descriptor:
-			"Built consumer and corporate credit cards end to end — issuer integration, card networks, and interchange.",
+			"Built consumer and corporate credit cards end to end: issuer integration, card networks, and interchange.",
 		chips: ["PicPay"],
 	},
 	{

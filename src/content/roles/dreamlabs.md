@@ -4,7 +4,7 @@ title: Tech Lead / Staff Engineer
 start: 2015-07
 end: 2022-05
 location: Ouro Preto, Brazil
-summary: Fractional CTO–style leadership for dozens of cloud and mobile products for startups.
+summary: Fractional CTO-style leadership for dozens of cloud and mobile products for startups.
 order: 4
 stack:
   - AWS
@@ -17,7 +17,7 @@ stack:
   - PostgreSQL
   - Kafka
 metrics:
-  - "Rateio Digital / Gringo — GMV grew 36× ($500K → $18M annually); Strangler Fig microservices migration"
+  - "Rateio Digital / Gringo: GMV grew 36× ($500K to $18M annually); Strangler Fig microservices migration"
 projects:
   - name: Rateio Digital / Gringo
     dates: "Jul 2021 – May 2022"

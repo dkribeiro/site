@@ -36,6 +36,6 @@ projects:
     link: "https://www.kanastra.com.br/en/banking"
 ---
 
-- Architected the firm’s core lending platform from the ground up to originate and issue multiple credit instruments — CCB, commercial notes (nota comercial), and debentures.
+- Architected the firm’s core lending platform from the ground up to originate and issue multiple credit instruments: CCB, commercial notes (nota comercial), and debentures.
 - Worked across FIDC structures and capital-markets operations; pioneered Temporal.io for durable, fully auditable long-running financial workflows.
 - Introduced formal SDLC, Jira metrics, and performance benchmarks in the Definition of Done.

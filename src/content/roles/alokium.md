@@ -4,7 +4,7 @@ title: Founder & Lead Developer
 start: 2016-06
 end: 2021-12
 location: Ouro Preto, Brazil
-summary: Bootstrapped smart-home startup—proprietary hardware, firmware, cloud, and mobile.
+summary: Bootstrapped smart-home startup spanning proprietary hardware, firmware, cloud, and mobile.
 order: 5
 stack:
   - AWS
