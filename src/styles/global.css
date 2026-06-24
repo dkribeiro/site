@@ -867,6 +867,8 @@ main {
 	}
 }
 .expertise-card {
+	display: flex;
+	flex-direction: column;
 	border: 1px solid var(--border);
 	border-left: 3px solid var(--accent);
 	border-radius: var(--radius);
@@ -893,7 +895,7 @@ main {
 }
 .expertise-chips {
 	list-style: none;
-	margin: 0;
+	margin: auto 0 0;
 	padding: 0;
 	display: flex;
 	flex-wrap: wrap;
